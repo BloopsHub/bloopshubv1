@@ -995,10 +995,9 @@ UpdateToggleUI = function()
 end
 
 ToggleBtn.MouseButton1Click:Connect(function()
-    AutoExecEnabled = not AutoExecEnabled
-    RegisterTeleportQueue(AutoExecEnabled)
+    AutoExecEnabled = true
+    RegisterTeleportQueue(true)
     UpdateToggleUI()
-    PersistCurrentState()
 end)
 
 -- 🎨 3. THEMES SECTION
