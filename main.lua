@@ -81,6 +81,12 @@ local function SaveLastConfig(data)
     end
 end
 
+local function PersistCurrentState()
+    local state = GetConfigState()
+    state.ConfigName = DefaultConfigName
+    SaveLastConfig(state)
+end
+
 -- Helper Function for Queueing Teleport
 local function RegisterTeleportQueue(enable)
     local queue_on_teleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport)
@@ -1032,9 +1038,9 @@ local function SaveConfigData(configName)
     local filePath = ConfigFolder .. "/" .. targetName .. ".json"
     if writefile then
         writefile(filePath, HttpService:JSONEncode(data))
-        SaveLastConfig(data)
-        ConfigInput.Text = targetName
         DefaultConfigName = targetName
+        ConfigInput.Text = targetName
+        PersistCurrentState()
         ConfigStatusLbl.Text = "✅ Saved: " .. targetName
         ConfigStatusLbl.TextColor3 = Color3.fromRGB(80, 200, 120)
     else
@@ -1101,6 +1107,10 @@ local function AutoLoadLastSavedConfig()
         DefaultConfigName = result.ConfigName or DefaultConfigName
         ConfigInput.Text = DefaultConfigName
         ApplyConfigState(result)
+        if result.AutoExecute ~= nil then
+            AutoExecEnabled = result.AutoExecute == true
+            UpdateToggleUI()
+        end
     end
 end
 
@@ -1168,10 +1178,7 @@ ToggleBtn.MouseButton1Click:Connect(function()
     AutoExecEnabled = not AutoExecEnabled
     RegisterTeleportQueue(AutoExecEnabled)
     UpdateToggleUI()
-
-    local state = GetConfigState()
-    state.ConfigName = DefaultConfigName
-    SaveLastConfig(state)
+    PersistCurrentState()
 end)
 
 -- 🎨 3. THEMES SECTION
