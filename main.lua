@@ -15,20 +15,9 @@ local HttpService = game:GetService("HttpService")
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 
--- Config Folder Setup
-local FolderName = "BloopsHub"
-local ConfigFolder = FolderName .. "/Configs"
-
-if makefolder and isfolder then
-    if not isfolder(FolderName) then makefolder(FolderName) end
-    if not isfolder(ConfigFolder) then makefolder(ConfigFolder) end
-end
-
 -- Global States
 local GlobalTransparency = 0
 local CurrentThemeKey = "Default"
-local DefaultConfigName = "default"
-local LastConfigFile = ConfigFolder .. "/LastConfig.json"
 
 -- Theme Preset Definitions
 local Themes = {
@@ -825,16 +814,19 @@ local function AddScriptButton(parent, name, fetchUrl, layoutOrder)
     return btn
 end
 
--- 🟢 SECTION 1: NO KEY REQUIRED
-AddSectionHeader(ScriptsTab, "🟢 NO KEY REQUIRED", Color3.fromRGB(75, 180, 125), 2)
+-- ⭐ RECOMMENDED SCRIPTS
+AddSectionHeader(ScriptsTab, "⭐ RECOMMENDED", Color3.fromRGB(245, 190, 70), 2)
 AddScriptButton(ScriptsTab, "BlyxoHub", "https://flowauth.net/v1/loaders/69d3463240384f3a73fbe32c178093a2.lua", 3)
 AddScriptButton(ScriptsTab, "Miranda", "https://raw.githubusercontent.com/miirandahub/loader/refs/heads/main/stealaeggs", 4)
-AddScriptButton(ScriptsTab, "Lennon Hub", "https://raw.githubusercontent.com/lennonxscripts/lennonhub/main/stealaegg.lua", 5)
+
+-- 🟢 SECTION 1: NO KEY REQUIRED
+AddSectionHeader(ScriptsTab, "🟢 NO KEY REQUIRED", Color3.fromRGB(75, 180, 125), 5)
+AddScriptButton(ScriptsTab, "Lennon Hub", "https://raw.githubusercontent.com/lennonxscripts/lennonhub/main/stealaegg.lua", 6)
 
 -- 🔴 SECTION 2: KEY REQUIRED
-AddSectionHeader(ScriptsTab, "🔑 KEY REQUIRED", Color3.fromRGB(220, 85, 85), 6)
-AddScriptButton(ScriptsTab, "Fyy Hub", "https://FyyCommunity.com", 7)
-AddScriptButton(ScriptsTab, "OMG Hub", "https://raw.githubusercontent.com/Omgshit/Scripts/main/MainLoader.lua", 8)
+AddSectionHeader(ScriptsTab, "🔑 KEY REQUIRED", Color3.fromRGB(220, 85, 85), 7)
+AddScriptButton(ScriptsTab, "Fyy Hub", "https://FyyCommunity.com", 8)
+AddScriptButton(ScriptsTab, "OMG Hub", "https://raw.githubusercontent.com/Omgshit/Scripts/main/MainLoader.lua", 9)
 
 -- Search Filtering
 SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
@@ -852,6 +844,39 @@ end)
 
 local FillTrackUI
 
+-- ⭐ RECOMMENDED SETTINGS
+local RecommendedHeader = Instance.new("TextLabel")
+RecommendedHeader.Size = UDim2.new(1, -6, 0, 20)
+RecommendedHeader.BackgroundTransparency = 1
+RecommendedHeader.Text = "⭐ RECOMMENDED SETTINGS"
+RecommendedHeader.TextXAlignment = Enum.TextXAlignment.Left
+RecommendedHeader.Font = Enum.Font.GothamBold
+RecommendedHeader.TextSize = 11
+RecommendedHeader.LayoutOrder = 1
+RecommendedHeader.Parent = SettingsTab
+RegisterUI(RecommendedHeader, "TextColor3", "AccentGlow")
+
+local RecommendedBtn = Instance.new("TextButton")
+RecommendedBtn.Size = UDim2.new(1, -6, 0, 36)
+RecommendedBtn.Text = "   Apply Recommended Theme"
+RecommendedBtn.Font = Enum.Font.GothamSemibold
+RecommendedBtn.TextSize = 12
+RecommendedBtn.TextXAlignment = Enum.TextXAlignment.Left
+RecommendedBtn.LayoutOrder = 2
+RecommendedBtn.Parent = SettingsTab
+RegisterUI(RecommendedBtn, "BackgroundColor3", "ItemBg", true)
+RegisterUI(RecommendedBtn, "TextColor3", "TextPrimary")
+
+local RecommendedCorner = Instance.new("UICorner")
+RecommendedCorner.CornerRadius = UDim.new(0, 6)
+RecommendedCorner.Parent = RecommendedBtn
+
+RecommendedBtn.MouseButton1Click:Connect(function()
+    GlobalTransparency = 0
+    ApplyTheme("Default")
+    FillTrackUI()
+end)
+
 -- 🎨 3. THEMES SECTION
 local ThemeHeader = Instance.new("TextLabel")
 ThemeHeader.Size = UDim2.new(1, -6, 0, 20)
@@ -860,13 +885,13 @@ ThemeHeader.Text = "🎨 SELECT UI THEME"
 ThemeHeader.TextXAlignment = Enum.TextXAlignment.Left
 ThemeHeader.Font = Enum.Font.GothamBold
 ThemeHeader.TextSize = 11
-ThemeHeader.LayoutOrder = 5
+ThemeHeader.LayoutOrder = 3
 ThemeHeader.Parent = SettingsTab
 RegisterUI(ThemeHeader, "TextColor3", "AccentGlow")
 
 local ColorContainer = Instance.new("Frame")
 ColorContainer.Size = UDim2.new(1, -6, 0, 50)
-ColorContainer.LayoutOrder = 6
+ColorContainer.LayoutOrder = 4
 ColorContainer.Parent = SettingsTab
 RegisterUI(ColorContainer, "BackgroundColor3", "CardBg", true)
 
@@ -918,7 +943,6 @@ local function AddCircleColorButton(themeKey, displayColor)
             end
         end
         ApplyTheme(themeKey)
-        UpdateToggleUI()
     end)
 end
 
@@ -936,13 +960,13 @@ TransHeader.Text = "✨ BACKGROUND TRANSPARENCY"
 TransHeader.TextXAlignment = Enum.TextXAlignment.Left
 TransHeader.Font = Enum.Font.GothamBold
 TransHeader.TextSize = 11
-TransHeader.LayoutOrder = 7
+TransHeader.LayoutOrder = 5
 TransHeader.Parent = SettingsTab
 RegisterUI(TransHeader, "TextColor3", "AccentGlow")
 
 local SliderFrame = Instance.new("Frame")
 SliderFrame.Size = UDim2.new(1, -6, 0, 50)
-SliderFrame.LayoutOrder = 8
+SliderFrame.LayoutOrder = 6
 SliderFrame.Parent = SettingsTab
 RegisterUI(SliderFrame, "BackgroundColor3", "CardBg", true)
 
@@ -1034,4 +1058,3 @@ BtnClose.MouseButton1Click:Connect(function() ScreenGui:Destroy() end)
 
 -- Apply default theme on script startup
 ApplyTheme("Default")
-AutoLoadLastSavedConfig()
