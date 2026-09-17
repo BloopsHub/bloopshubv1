@@ -15,6 +15,19 @@ local HttpService = game:GetService("HttpService")
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 
+-- Re-execute the hub after a server hop.
+local ScriptRawUrl = "https://raw.githubusercontent.com/BloopsHub/bloopshubv1/refs/heads/main/main.lua"
+local QueueOnTeleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport)
+
+if QueueOnTeleport then
+    pcall(function()
+        QueueOnTeleport([[repeat task.wait() until game:IsLoaded()
+loadstring(game:HttpGet("]] .. ScriptRawUrl .. [["))()]])
+    end)
+else
+    warn("BloopsHub: This executor does not support queue_on_teleport, so auto re-execute is unavailable.")
+end
+
 -- Global States
 local GlobalTransparency = 0
 local CurrentThemeKey = "Default"
