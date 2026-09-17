@@ -1168,6 +1168,10 @@ ToggleBtn.MouseButton1Click:Connect(function()
     AutoExecEnabled = not AutoExecEnabled
     RegisterTeleportQueue(AutoExecEnabled)
     UpdateToggleUI()
+
+    local state = GetConfigState()
+    state.ConfigName = DefaultConfigName
+    SaveLastConfig(state)
 end)
 
 -- 🎨 3. THEMES SECTION
