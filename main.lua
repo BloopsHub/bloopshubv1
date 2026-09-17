@@ -29,7 +29,7 @@ local GlobalTransparency = 0
 local AutoExecuteEnabled = true -- Default enabled
 local ScriptRawUrl = "https://raw.githubusercontent.com/BloopsHub/bloopshubv1/refs/heads/main/main.lua"
 local CurrentThemeKey = "Default"
-local DefaultConfigName = "TempConfig"
+local DefaultConfigName = "default"
 local LastConfigFile = ConfigFolder .. "/LastConfig.json"
 
 local function HasPlaceholderScriptUrl(url)
@@ -960,12 +960,14 @@ ConfigCorner.Parent = ConfigCard
 local ConfigInput = Instance.new("TextBox")
 ConfigInput.Size = UDim2.new(1, -20, 0, 28)
 ConfigInput.Position = UDim2.new(0, 10, 0, 10)
-ConfigInput.PlaceholderText = "Type config name..."
+ConfigInput.PlaceholderText = "default"
 ConfigInput.PlaceholderColor3 = Color3.fromRGB(110, 130, 150)
 ConfigInput.Text = DefaultConfigName
 ConfigInput.Font = Enum.Font.Gotham
 ConfigInput.TextSize = 11
 ConfigInput.ClearTextOnFocus = false
+ConfigInput.TextEditable = false
+ConfigInput.Active = false
 ConfigInput.Parent = ConfigCard
 RegisterUI(ConfigInput, "BackgroundColor3", "ItemBg", true)
 RegisterUI(ConfigInput, "TextColor3", "TextPrimary")
@@ -1031,7 +1033,7 @@ RegisterUI(ConfigStatusLbl, "TextColor3", "TextSecondary")
 
 -- Config Logic
 local function SaveConfigData(configName)
-    local targetName = configName and configName ~= "" and configName or DefaultConfigName
+    local targetName = DefaultConfigName
     local data = GetConfigState()
     data.ConfigName = targetName
 
@@ -1053,7 +1055,7 @@ local function SaveConfigData(configName)
 end
 
 local function LoadConfigData(configName)
-    local targetName = configName and configName ~= "" and configName or DefaultConfigName
+    local targetName = DefaultConfigName
     local filePath = ConfigFolder .. "/" .. targetName .. ".json"
     if isfile and isfile(filePath) and readfile then
         local success, result = pcall(function()
@@ -1082,7 +1084,7 @@ local function LoadConfigData(configName)
 end
 
 local function DeleteConfigData(configName)
-    local targetName = configName and configName ~= "" and configName or DefaultConfigName
+    local targetName = DefaultConfigName
     local filePath = ConfigFolder .. "/" .. targetName .. ".json"
     if isfile and isfile(filePath) and delfile then
         delfile(filePath)
