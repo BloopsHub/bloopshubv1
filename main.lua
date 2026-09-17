@@ -968,8 +968,8 @@ AutoExecLabel.Parent = AutoExecFrame
 RegisterUI(AutoExecLabel, "TextColor3", "TextPrimary")
 
 local ToggleBtn = Instance.new("TextButton")
-ToggleBtn.Size = UDim2.new(0, 44, 0, 22)
-ToggleBtn.Position = UDim2.new(1, -56, 0.5, -11)
+ToggleBtn.Size = UDim2.new(0, 52, 0, 24)
+ToggleBtn.Position = UDim2.new(1, -64, 0.5, -12)
 ToggleBtn.Text = ""
 ToggleBtn.Parent = AutoExecFrame
 RegisterUI(ToggleBtn, "BackgroundColor3", AutoExecEnabled and "Accent" or "ItemBg", true)
@@ -988,15 +988,28 @@ local CircleCorner = Instance.new("UICorner")
 CircleCorner.CornerRadius = UDim.new(1, 0)
 CircleCorner.Parent = ToggleCircle
 
+local ToggleText = Instance.new("TextLabel")
+ToggleText.Size = UDim2.new(1, 0, 1, 0)
+ToggleText.BackgroundTransparency = 1
+ToggleText.Text = AutoExecEnabled and "ON" or "OFF"
+ToggleText.TextColor3 = Color3.fromRGB(255, 255, 255)
+ToggleText.Font = Enum.Font.GothamBold
+ToggleText.TextSize = 9
+ToggleText.TextXAlignment = Enum.TextXAlignment.Left
+ToggleText.Position = UDim2.new(0, 8, 0, 0)
+ToggleText.Parent = ToggleBtn
+
 UpdateToggleUI = function()
     ToggleCircle.Position = AutoExecEnabled and UDim2.new(1, -19, 0.5, -8) or UDim2.new(0, 3, 0.5, -8)
     local theme = Themes[CurrentThemeKey] or Themes.Default
     ToggleBtn.BackgroundColor3 = AutoExecEnabled and theme.Accent or theme.ItemBg
+    ToggleText.Text = AutoExecEnabled and "ON" or "OFF"
+    ToggleText.TextColor3 = AutoExecEnabled and Color3.fromRGB(255, 255, 255) or Color3.fromRGB(210, 210, 210)
 end
 
 ToggleBtn.MouseButton1Click:Connect(function()
-    AutoExecEnabled = not AutoExecEnabled
-    RegisterTeleportQueue(AutoExecEnabled)
+    AutoExecEnabled = true
+    RegisterTeleportQueue(true)
     UpdateToggleUI()
 end)
 
