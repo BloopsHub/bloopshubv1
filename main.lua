@@ -27,7 +27,7 @@ end
 -- Global States
 local GlobalTransparency = 0
 local AutoExecuteEnabled = true -- Default enabled
-local ScriptRawUrl = "https://raw.githubusercontent.com/BloopsHub/BloopsHub/refs/heads/main/main.lua"
+local ScriptRawUrl = "https://raw.githubusercontent.com/BloopsHub/bloopshubv1/refs/heads/main/main.lua"
 local CurrentThemeKey = "Default"
 local DefaultConfigName = "TempConfig"
 local LastConfigFile = ConfigFolder .. "/LastConfig.json"
