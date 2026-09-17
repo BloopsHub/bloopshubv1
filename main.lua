@@ -1040,6 +1040,9 @@ local function SaveConfigData(configName)
         writefile(filePath, HttpService:JSONEncode(data))
         DefaultConfigName = targetName
         ConfigInput.Text = targetName
+        AutoExecEnabled = data.AutoExecute == true
+        RegisterTeleportQueue(AutoExecEnabled)
+        if UpdateToggleUI then UpdateToggleUI() end
         PersistCurrentState()
         ConfigStatusLbl.Text = "✅ Saved: " .. targetName
         ConfigStatusLbl.TextColor3 = Color3.fromRGB(80, 200, 120)
@@ -1061,6 +1064,9 @@ local function LoadConfigData(configName)
             ApplyConfigState(result)
             DefaultConfigName = targetName
             ConfigInput.Text = targetName
+            AutoExecEnabled = result.AutoExecute == true
+            RegisterTeleportQueue(AutoExecEnabled)
+            if UpdateToggleUI then UpdateToggleUI() end
             SaveLastConfig(result)
 
             ConfigStatusLbl.Text = "✅ Loaded: " .. targetName
@@ -1109,8 +1115,10 @@ local function AutoLoadLastSavedConfig()
         ApplyConfigState(result)
         if result.AutoExecute ~= nil then
             AutoExecEnabled = result.AutoExecute == true
-            UpdateToggleUI()
+            RegisterTeleportQueue(AutoExecEnabled)
+            if UpdateToggleUI then UpdateToggleUI() end
         end
+        PersistCurrentState()
     end
 end
 
